@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var gastoRouter = require('./routes/gasto.router');
+var documentoRouter = require('./routes/documento.router');
 
 var app = express();
 app.use(cors());
@@ -33,6 +34,7 @@ const mkappuse='/bkd';
 app.use('/',express.static('cliente',{redirect:false}));
 
 app.use(mkappuse,gastoRouter);
+app.use(mkappuse,documentoRouter);
 
 app.get('*',function(req,res,next){
   res.sendFile(path.resolve('cliente/index.html')); //estas
