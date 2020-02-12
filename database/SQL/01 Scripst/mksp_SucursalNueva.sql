@@ -68,8 +68,35 @@ begin
 
 END
 GO
+
+-- select * from sucursal
+
 -- EXEC mksp_SucursalNueva 10,'ALVARO OBREGON',NULL,'DEMO'
 
+/*
 
---
+EXEC mksp_SucursalNueva 10,'ALVARO OBREGON',NULL,'DEMO'
+EXEC mksp_SucursalNueva 20,'RIO TIBER',NULL,'DEMO'
+EXEC mksp_SucursalNueva 30,'FEDERAL VALLARTA',NULL,'DEMO'
+EXEC mksp_SucursalNueva 40,'VALLADOLID',NULL,'DEMO'
+EXEC mksp_SucursalNueva 50,'FLORIDA',NULL,'DEMO'
+EXEC mksp_SucursalNueva 60,'POLANCO',NULL,'DEMO'
+EXEC mksp_SucursalNueva 70,'TAQUEARTE SANTA FE',NULL,'DEMO'
+EXEC mksp_SucursalNueva 80,'FEDERAL LERMA',NULL,'DEMO'
+EXEC mksp_SucursalNueva 90,'FEDERAL SANTA FE',NULL,'DEMO'
+EXEC mksp_SucursalNueva 100,'DEL VALLE',NULL,'DEMO'
+EXEC mksp_SucursalNueva 110,'NAPOLES',NULL,'DEMO'
+EXEC mksp_SucursalNueva 120,'PARQUE HUNDIDO',NULL,'DEMO'
+EXEC mksp_SucursalNueva 130,'CONDESA',NULL,'DEMO'
+EXEC mksp_SucursalNueva 140,'UNIVERSIDAD',NULL,'DEMO'
+EXEC mksp_SucursalNueva 150,'ROMA',NULL,'DEMO'
+EXEC mksp_SucursalNueva 160,'RIOJA',NULL,'DEMO'
+EXEC mksp_SucursalNueva 170,'SALVADOR AGRAZ',NULL,'DEMO'
+EXEC mksp_SucursalNueva 180,'DOWN TOWN',NULL,'DEMO'
+EXEC mksp_SucursalNueva 190,'COYOACAN',NULL,'DEMO'
+EXEC mksp_SucursalNueva 200,'TENORIOS',NULL,'DEMO'
+EXEC mksp_SucursalNueva 210,'FEDERAL NAPOLES',NULL,'DEMO'
+
+*/
+
 

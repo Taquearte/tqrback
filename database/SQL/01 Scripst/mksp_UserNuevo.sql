@@ -7,6 +7,7 @@ SET QUOTED_IDENTIFIER OFF
 if Object_ID('mksp_UserNuevo','P') is not null drop proc mksp_UserNuevo
 GO
 CREATE PROCEDURE mksp_UserNuevo
+@uRazonSocial  varchar(100),
 @uNombre varchar(33),
 @uPaterno varchar(33),
 @uMaterno varchar(33),
@@ -37,25 +38,27 @@ begin
 
 	SELECT @uNombre=LTRIM(RTRIM(@uNombre)),@uPaterno=LTRIM(RTRIM(@uPaterno)),@uMaterno=LTRIM(RTRIM(@uMaterno)),
 	@NombreCorto=LTRIM(RTRIM(@NombreCorto)) ,@RFC=LTRIM(RTRIM(@RFC)),
-	@Observaciones=LTRIM(RTRIM(@Observaciones)),@CveUserOtra=LTRIM(RTRIM(@CveUserOtra))
+	@Observaciones=LTRIM(RTRIM(@Observaciones)),@CveUserOtra=LTRIM(RTRIM(@CveUserOtra)),
+	@uRazonSocial=LTRIM(RTRIM(@uRazonSocial))
 
 	IF LEN(ISNULL(@PerfilWeb,''))=0
 		SELECT @OK=0,@OKRef='El Perfil del usuario es un dato obligatorio'
 
-	IF LEN(ISNULL(@PaswordWeb,''))=0
-		SELECT @OK=0,@OKRef='El Nombre es un dato obligatorio'
+	IF LEN(ISNULL(@PaswordWeb,''))=0 
+		SELECT @OK=0,@OKRef='El password es un dato obligatorio'
 					
-	IF LEN(ISNULL(@uNombre,''))=0
+	IF LEN(ISNULL(@uNombre,''))=0 AND LEN(ISNULL(@uRazonSocial,''))=0
 		SELECT @OK=0,@OKRef='El Nombre es un dato obligatorio'
 
-	IF @OK=1 and LEN(ISNULL(@uPaterno,''))=0
+	IF @OK=1 and LEN(ISNULL(@uPaterno,''))=0 AND LEN(ISNULL(@uRazonSocial,''))= 0
 		SELECT @OK=0,@OKRef='El apellido paterno es un dato obligatorio'
 
-	IF @OK=1 
+	IF @OK=1 AND LEN(ISNULL(@uRazonSocial,''))= 0
 		Select @Nombre=@uNombre+' '+@uPaterno+' '+isnull(@uMaterno,'')
+	else 
+		Select @Nombre= @uRazonSocial
 
-
-
+		--select len(isnull(@RFC,''))
 	If @OK=1 and len(isnull(@RFC,''))=0 
 		SET @RFC =@RFCGenerico
 
@@ -90,8 +93,8 @@ begin
 
 	if @OK=1 AND EXISTS (SELECT * FROM Usuario WHERE Nombre=@Nombre )
 		Select @OK=0,@OKRef='El Nombre ya se encuentra en nuestra base de datos'
-
-	if @OK=1
+		--select @RFC
+	if @OK=1 
 	BEGIN
 		INSERT INTO Usuario
 		(Usuario, Nombre, Sucursal, GrupoTrabajo, Departamento, Contrasena, ContrasenaConfirmacion,  Telefono, DefMoneda, Afectar, Cancelar, ModificarSituacion, EnviarExcel, ImprimirMovs, PreliminarMovs, Reservar, DesReservar, Asignar, DesAsignar, Estatus, 
@@ -115,19 +118,79 @@ begin
 
 END
 GO
--- EXEC mksp_UserNuevo 'Hector','Rosales','Ortiz','XEXX010101000','DEMO','PORTAL 2020','HROSALES','ADMIN','mexico'
--- EXEC mksp_UserNuevo 'Mick','Jagger',NULL,'XEXX010101000','DEMO','PORTAL 2020','MJAGGER','ADMIN','mexico'
--- EXEC mksp_UserNuevo 'Kurt','Cobain',NULL,'XEXX010101000','DEMO','PORTAL 2020','KCOBAIN','ADMIN','mexico'
--- EXEC mksp_UserNuevo 'Elizabeth','Armendariz',NULL,'XEXX010101000','DEMO','PORTAL 2020','ARMELY','ADMIN','mexico'
-
--- EXEC mksp_UserNuevo 'Arturo','Tapia',NULL,'XEXX010101000','DEMO','PORTAL 2020','ATAPIA','MEDIUM','mexico'
--- EXEC mksp_UserNuevo 'Fernando','Gomez',NULL,'XEXX010101000','DEMO','PORTAL 2020','FGOMEZ','MEDIUM','mexico'
-
--- EXEC mksp_UserNuevo 'Pedro','Infante',NULL,'XEXX010101000','DEMO','PORTAL 2020','PINFANTE','USER','mexico'
--- EXEC mksp_UserNuevo 'Jorge','Negrete',NULL,'XEXX010101000','DEMO','PORTAL 2020','JNEGRETE','USER','mexico'
 
 
---exec mksp_AccesoEmpSuc 'ARMELY','ARC14','10'
+-- EXEC mksp_UserNuevo 'VIOLETA AIZA XX',NULL,NULL,NULL,'AIAV8411193XX','DEMO','PORTAL 2020','OLEXX','USER','Svtm@2029'
+-- update usuario set Costos=1 
+-- update usuario set Configuracion = 'DEMO',Acceso = 'DEMO' Where Usuario <>'DEMO' 
+
+UPDATE Usuario
+SET
+  
+  
+
+/*
+
+EXEC mksp_UserNuevo 'ABASTECEDORA FRES-FRUT SA DE CV',NULL,NULL,NULL, 'AFR170912FS6','DEMO','PORTAL 2020','FFRUT','USER','LpYsf@2019'
+EXEC mksp_UserNuevo 'ADYERIN, S.A. DE C.V.',NULL,NULL,NULL,           'ADY101011IS1','DEMO','PORTAL 2020','ADYER','USER','Svtm@2019'
+EXEC mksp_UserNuevo 'AGITADORA COMERCIAL, S.A. DEC.V.',NULL,NULL,NULL,'ACO1603033J5','DEMO','PORTAL 2020','TRAFI','USER','Nhlceh@2019'
+
+
+EXEC mksp_UserNuevo 'Agroproductos de Alto Valor',NULL,NULL,NULL,'AAV160209M59','DEMO','PORTAL 2020','AZUCE','USER','Nhlceh@2020'
+EXEC mksp_UserNuevo 'Alimentos BAAB',NULL,NULL,NULL,'ABA131030NV2','DEMO','PORTAL 2020','BAAB','USER','LpYsf@2024'
+EXEC mksp_UserNuevo 'Campiña Mexicana',NULL,NULL,NULL,'CME020117U51','DEMO','PORTAL 2020','CPIMX','USER','LpYsf@2025'
+EXEC mksp_UserNuevo 'CARNES PREMIUM XO, S.A. DE C.V.',NULL,NULL,NULL,'KAR100211115','DEMO','PORTAL 2020','XOCHI','USER','LpYsf@2020'
+EXEC mksp_UserNuevo 'CERVECERIA MODELO DE MEXICO S DE RL DE CV',NULL,NULL,NULL,'AMH080702RMA','DEMO','PORTAL 2020','MODEL','USER','Svtm@2020'
+EXEC mksp_UserNuevo 'Comercializadora BHLM',NULL,NULL,NULL,'CBH160604PI9','DEMO','PORTAL 2020','BHLM','USER','Nhlceh@2021'
+EXEC mksp_UserNuevo 'Comercializadora Grumer',NULL,NULL,NULL,'CGR921112D27','DEMO','PORTAL 2020','GRUME','USER','Nhlceh@2026'
+EXEC mksp_UserNuevo 'COMPAÑIA RESTAURANTERA MARIA CANDELARIA SA DE CV',NULL,NULL,NULL,'RMC9207279R2','DEMO','PORTAL 2020','CALLE','USER','Nhlceh@2020'
+EXEC mksp_UserNuevo 'CRUJIENTE TRADICIÓN MEXICANA, SA DE CV',NULL,NULL,NULL,'CTM151022Q52','DEMO','PORTAL 2020','FRITU','USER','LpYsf@2021'
+EXEC mksp_UserNuevo 'Cruz Martinez Meza',NULL,NULL,NULL,'MAMC7601302H6','DEMO','PORTAL 2020','MAMA','USER','LpYsf@2020'
+EXEC mksp_UserNuevo 'Deep Services',NULL,NULL,NULL,'DSE1808308P1','DEMO','PORTAL 2020','DEEPS','USER','LpYsf@2022'
+
+EXEC mksp_UserNuevo 'DELTA TIGER SA DE CV',NULL,NULL,NULL,'DTI081211J61','DEMO','PORTAL 2020','DELTA','USER','Nhlceh@2021'
+EXEC mksp_UserNuevo 'Dinamica Alimenticia Profesional',NULL,NULL,NULL,'DAP031202U12','DEMO','PORTAL 2020','DAPSA','USER','Svtm@2026'
+
+EXEC mksp_UserNuevo 'Distrib. Carnes Ideal',NULL,NULL,NULL,'DCI9802185I5','DEMO','PORTAL 2020','IDEAL','USER','LpYsf@2026'
+
+EXEC mksp_UserNuevo 'Eduardo Sigales Vertti',NULL,NULL,NULL,'SIVE640405IS4','DEMO','PORTAL 2020','AGUIL','USER','Nhlceh@2023'
+EXEC mksp_UserNuevo 'Envai Food Packaging',NULL,NULL,NULL,'EFP160312UM1','DEMO','PORTAL 2020','FOOD','USER','LpYsf@2023'
+EXEC mksp_UserNuevo 'Felipe de Jesus Ramirez Juarez',NULL,NULL,NULL,'RAJF305012X7','DEMO','PORTAL 2020','FJRAM','USER','Svtm@2025'
+EXEC mksp_UserNuevo 'FOOD SERVICE DE MEXICO, SA DE CV',NULL,NULL,NULL,'FSM960712789','DEMO','PORTAL 2020','NESPR','USER','Nhlceh@2022'
+EXEC mksp_UserNuevo 'GARCOMEX SA DE CV',NULL,NULL,NULL,'GAR9110176E5','DEMO','PORTAL 2020','STAFE','USER','LpYsf@2023'
+EXEC mksp_UserNuevo 'Guillermo Matus Bocanegra',NULL,NULL,NULL,'MABG7311063ZA','DEMO','PORTAL 2020','BOCAN','USER','LpYsf@2028'
+EXEC mksp_UserNuevo 'Horizonte Claro Negocios',NULL,NULL,NULL,'HCN060427MZ3','DEMO','PORTAL 2020','MATEO','USER','Svtm@2020'
+
+EXEC mksp_UserNuevo 'INDUSTRIA DE REFRESCOS S DE RL DE CV',NULL,NULL,NULL,'IRE820805HA3','DEMO','PORTAL 2020','PEPSI','USER','Nhlceh@2023'
+EXEC mksp_UserNuevo 'JAVIER AURELIO A. AVILA',NULL,NULL,NULL,'AAAJ440820GD9','DEMO','PORTAL 2020','AVILA','USER','LpYsf@2024'
+EXEC mksp_UserNuevo 'Jose Claudio Reyes Medina',NULL,NULL,NULL,'REMC820403NQ3','DEMO','PORTAL 2020','JREY','USER','Nhlceh@2024'
+EXEC mksp_UserNuevo 'Jose Guadalupe Avila Hernandez',NULL,NULL,NULL,'AIHG6601271X7','DEMO','PORTAL 2020','JAVI','USER','Nhlceh@2022'
+EXEC mksp_UserNuevo 'KAZA & GAEL DISTRIBUIDORA DE MEXICO S.A. DE C.V.',NULL,NULL,NULL,'KAG120828EX5','DEMO','PORTAL 2020','KYG','USER','Svtm@2024'
+EXEC mksp_UserNuevo 'KELCO QUIMICOS SA DE CV',NULL,NULL,NULL,'KQU150429GI9','DEMO','PORTAL 2020','KELCO','USER','Nhlceh@2024'
+EXEC mksp_UserNuevo 'LA EUROPEA MEXICO SAPI DE CV',NULL,NULL,NULL,'EME910610G1A','DEMO','PORTAL 2020','EUROP','USER','LpYsf@2025'
+EXEC mksp_UserNuevo 'LA TEXANA, S.A. DE C.V.',NULL,NULL,NULL,'TEX931122JL3','DEMO','PORTAL 2020','TEXAN','USER','Svtm@2025'
+EXEC mksp_UserNuevo 'MARIA DEL CARMEN HERNANDEZ FERNANDEZ',NULL,NULL,NULL,'HEFC431005SR9','DEMO','PORTAL 2020','CANNO','USER','Nhlceh@2025'
+EXEC mksp_UserNuevo 'MARIA ESTHER JIMENEZ LOZANO',NULL,NULL,NULL,'JILE921003NU8','DEMO','PORTAL 2020','CARV','USER','LpYsf@2026'
+
+
+EXEC mksp_UserNuevo 'Marisol Fabiola Castañeda Larios',NULL,NULL,NULL,'CALM841114B8A','DEMO','PORTAL 2020','DCALD','USER','Svtm@2021'
+EXEC mksp_UserNuevo 'MONICA AGUILAR GONZALEZ',NULL,NULL,NULL,'AUGM7101238Q3','DEMO','PORTAL 2020','MONDE','USER','Nhlceh@2026'
+EXEC mksp_UserNuevo 'NETMAR S.A. DE C.V.',NULL,NULL,NULL,'NET010823IQ0','DEMO','PORTAL 2020','NMAR','USER','LpYsf@2027'
+EXEC mksp_UserNuevo 'ROCIO GOMEZ NAVA',NULL,NULL,NULL,'GONR651119UU9','DEMO','PORTAL 2020','CUIST','USER','Svtm@2027'
+
+EXEC mksp_UserNuevo 'SANTO MARTINEZ DELGADO',NULL,NULL,NULL,'MADS760522I20','DEMO','PORTAL 2020','VAZQZ','USER','Nhlceh@2027'
+EXEC mksp_UserNuevo 'SERVICIOS E INSUMOS MUNDIALES SA DE CV',NULL,NULL,NULL,'SEI100729773','DEMO','PORTAL 2020','SEIM','USER','LpYsf@2028'
+
+EXEC mksp_UserNuevo 'Super Carnes Selectas',NULL,NULL,NULL,'SCS011115HH4','DEMO','PORTAL 2020','GRANF','USER','Nhlceh@2025'
+EXEC mksp_UserNuevo 'UNILEVER DE MEXICO S. DE R.L. DE C.V.',NULL,NULL,NULL,'UME651115N48','DEMO','PORTAL 2020','HOLAN','USER','Nhlceh@2028'
+EXEC mksp_UserNuevo 'VICTOR IBARRA MOLINA',NULL,NULL,NULL,'IAMV830921IJ5','DEMO','PORTAL 2020','HLALA','USER','LpYsf@2029'
+EXEC mksp_UserNuevo 'VIOLETA AIZA ABRAHAM',NULL,NULL,NULL,'AIAV8411193Q4','DEMO','PORTAL 2020','OLETA','USER','Svtm@2029'
+
+
+*/
+--exec mksp_AccesoEmpSuc 'KCOBAIN','AAA12','10'
+
+--update usuario set Nombre=upper(Nombre)
 
 --SElect * from usuario
 --select * from Empresa
@@ -137,14 +200,14 @@ GO
 /*
 
 declare @user varchar(10)
-set @user='PINFANTE'
+set @user='GRANF'
 select * from usuario where usuario=@user
 select * from cte where cliente=@user
 select * from prov where proveedor=@user
 
 
 declare @user varchar(10)
-set @user='KCOBAIN'
+set @user='OLEXX'
 DELETE usuario where usuario=@user
 DELETE cte where cliente=@user
 DELETE prov where proveedor=@user

@@ -64,7 +64,7 @@ begin
 	INSERT INTO Cte
 				 (Cliente, Nombre, NombreCorto, Tipo, Direccion, DireccionNumero, DireccionNumeroInt, EntreCalles, Observaciones, Delegacion, Colonia, CodigoPostal, Poblacion, Estado, RFC, Telefonos, TelefonosLada, Contacto1, Contacto2, eMail1, eMail2, Categoria, Familia, Credito, Estatus, 
 				 UltimoCambio, Alta, DefMoneda, CreditoMoneda, ChecarCredito, BloquearMorosos, ModificarVencimiento, RecorrerVencimiento, BonificacionTipo, DeducibleMoneda, Usuario, Comentarios)
-	VALUES (@CveCte, @Nombre, @NombreCorto, @Tipo, NULL, NULL, NULL, NULL, @Observaciones,NULL, NULL, NULL, NULL, NULL, @RFCGenerico, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, @Estatus, @hoyhh, @hoy, @Moneda, @Moneda, '(Empresa)', '(Empresa)', '(Empresa)', 
+	VALUES (@CveCte, @Nombre, @NombreCorto, @Tipo, NULL, NULL, NULL, NULL, @Observaciones,NULL, NULL, NULL, NULL, NULL, @RFC, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, @Estatus, @hoyhh, @hoy, @Moneda, @Moneda, '(Empresa)', '(Empresa)', '(Empresa)', 
 				 '(Empresa)', 'No', @Moneda, @Usuario, '')
 
 	If @OK=1

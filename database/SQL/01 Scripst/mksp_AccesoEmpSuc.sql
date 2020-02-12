@@ -30,8 +30,30 @@ END
 
 GO
 
+
+
 /*
-exec mksp_AccesoEmpSuc 'JNEGRETE','ARC14','10'
+
+select * from UsuarioD
+truncate table UsuarioD
+INSERT INTO UsuarioD (Usuario, Empresa)
+SELECT a.Usuario, b.Empresa
+FROM Usuario a full join Empresa b on 1=1
+
+select * from UsuarioSucursalAcceso
+INSERT INTO UsuarioSucursalAcceso (Usuario, Sucursal)
+SELECT a.Usuario, b.Sucursal
+FROM Usuario a full join Sucursal b on 1=1
+
+
+EXEC mksp_AccesoEmpSuc 'FFRUT','ARC14','10'
+
+SELECT Usuario,PaswordWeb 
+Into UsuarioBackpasword
+FROM Usuario
+
+update Usuario set PaswordWeb=12345
+
 
 SElect * from usuario
 select * from Empresa
