@@ -10,16 +10,6 @@ module.exports = {
     
 }
 
-module.exports = {
-    server:'servidoraspel.dnsalias.org',
-    port: 1433,
-    user:'aspel',
-    password:'T4qu34nd0',
-    database:'MKPIXEL'    
-}
-
-
-*/
 
 module.exports = {
     server:'localhost',
@@ -30,4 +20,15 @@ module.exports = {
     
 }
 
+*/
+
+
+
+module.exports = {
+    server:'servidoraspel.dnsalias.org',
+    port: 1433,
+    user:'aspel',
+    password:'T4qu34nd0',
+    database:'MKPIXEL'    
+}
 

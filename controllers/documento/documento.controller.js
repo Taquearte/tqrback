@@ -15,7 +15,7 @@ async function documentolist (req, res) {
           .input('sucursal', sql.VarChar(10), req.query.sucursal)    
           .input('modulo', sql.VarChar(10), req.query.modulo)  
           .input('perfil', sql.VarChar(10), req.query.perfil)   
-          .query('Exec mksp_GetMovlist @Usuario, @empresa, @sucursal, @modulo')
+          .query('Exec mksp_GetMovlist @usuario, @empresa, @sucursal, @modulo, @perfil')
       //console.log(result);
       let mkdocumento= result.recordset;     
       res.status(200).json(mkdocumento);
