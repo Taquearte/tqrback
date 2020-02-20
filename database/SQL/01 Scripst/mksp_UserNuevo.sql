@@ -16,7 +16,8 @@ CREATE PROCEDURE mksp_UserNuevo
 @Observaciones varchar(100),
 @CveUserOtra  varchar(10),
 @PerfilWeb Varchar(15),
-@PaswordWeb Varchar(15)
+@PaswordWeb Varchar(15),
+@EnSilencio bit =0
 
 as
 begin
@@ -91,8 +92,8 @@ begin
 	if @OK=1 AND EXISTS (SELECT * FROM Usuario WHERE Usuario=@CveUser )
 		Select @OK=0,@OKRef='El usuario ya se encuentra en nuestra base de datos'
 
-	if @OK=1 AND EXISTS (SELECT * FROM Usuario WHERE Nombre=@Nombre )
-		Select @OK=0,@OKRef='El Nombre ya se encuentra en nuestra base de datos'
+	--if @OK=1 AND EXISTS (SELECT * FROM Usuario WHERE Nombre=@Nombre )
+	--	Select @OK=0,@OKRef='El Nombre ya se encuentra en nuestra base de datos'
 		--select @RFC
 	if @OK=1 
 	BEGIN
@@ -102,19 +103,21 @@ begin
 		VALUES (@CveUser, @Nombre, 0, 'MKSD', 'SISTEMAS', '0633971b5e442cd51b8e0a972d74f054', '0633971b5e442cd51b8e0a972d74f054',  '5557575757', 'Pesos', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,@Estatus, @hoyhh, @hoyhh, 'info@correo.com', @Observaciones, '(Clasico)', 
 		'(Total)',@uNombre,@uPaterno,@uMaterno,@RFC,@PerfilWeb,@PaswordWeb,1 )
 
-		EXEC mksp_CteNuevo  @Nombre,'',@RFC,@Usuario,@Observaciones,@CveUser,@OK output,@OKRef output
-		EXEC mksp_ProvNuevo @Nombre,'',@RFC,@Usuario,@Observaciones,@CveUser,@OK output,@OKRef output
+		EXEC mksp_CteNuevo  @Nombre,'',@RFC,@Usuario,@Observaciones,@CveUser,1,@OK output,@OKRef output
+		EXEC mksp_ProvNuevo @Nombre,'',@RFC,@Usuario,@Observaciones,@CveUser,1,@OK output,@OKRef output
 
 	END
 	
-
-	If @OK=1
+	if @EnSilencio=1
 	BEGIN
-		SET @OKRef='El Usuario se dio de alta correctamente'
-		SELECT @OK as OK, @OKRef as OKRef 
+		If @OK=1
+		BEGIN
+			SET @OKRef='El Usuario se dio de alta correctamente'
+			SELECT @OK as OK, @OKRef as OKRef 
+		END
+		ELSE
+			SELECT @OK as OK, @OKRef as OKRef
 	END
-	ELSE
-		SELECT @OK as OK, @OKRef as OKRef
 
 END
 GO
@@ -124,8 +127,8 @@ GO
 -- update usuario set Costos=1 
 -- update usuario set Configuracion = 'DEMO',Acceso = 'DEMO' Where Usuario <>'DEMO' 
 
-UPDATE Usuario
-SET
+--UPDATE Usuario
+--SET
   
   
 

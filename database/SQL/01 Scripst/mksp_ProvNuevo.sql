@@ -13,6 +13,7 @@ CREATE PROCEDURE mksp_ProvNuevo
 @Usuario varchar(10),
 @Observaciones varchar(100),
 @CveProvOtra  varchar(10),
+@EnSilencio bit =0,
 @OK int Output,
 @OKRef varchar(255) Output
 as
@@ -59,8 +60,8 @@ begin
 	if @OK=1 AND EXISTS (SELECT * FROM Prov WHERE RFC = @RFC and RFC <> @RFCGenerico) 
 	Select @OK=0,@OKRef='El RFC del proveedor ya se encuentra en nuestra base de datos'
 
-	if @OK=1 AND EXISTS (SELECT * FROM Prov WHERE Nombre=@Nombre )
-	Select @OK=0,@OKRef='El Nombre ya se encuentra en nuestra base de datos'
+	--if @OK=1 AND EXISTS (SELECT * FROM Prov WHERE Nombre=@Nombre )
+	--Select @OK=0,@OKRef='El Nombre ya se encuentra en nuestra base de datos'
 
 	if @OK=1
 		INSERT INTO Prov
@@ -68,15 +69,16 @@ begin
 			CompraAutoCargosTipo, Pagares, wGastoSolicitud, ConLimiteAnticipos, ChecarLimite, eMailAuto, Intercompania, GarantiaCostos,Observaciones)
 		VALUES (@CveProv, @Nombre,@NombreCorto, @Tipo,  @RFC, @Estatus, @hoy, @hoyhh, 0, @moneda, 0, 0, 0, 'No', 0, 0, 0, 'Anticipo', 0, 0, 0,@Observaciones)
 
-
-	If @OK=1
+	if @EnSilencio=1
 	BEGIN
-		SET @OKRef='El Proveedor se dio de alta correctamente'
-		--SELECT @OK as OK, @OKRef as OKRef 
+		If @OK=1
+		BEGIN
+			SET @OKRef='El Proveedor se dio de alta correctamente'
+			--SELECT @OK as OK, @OKRef as OKRef 
+		END
+		ELSE
+			SELECT @OK as OK, @OKRef as OKRef
 	END
-	--ELSE
-		--SELECT @OK as OK, @OKRef as OKRef
-
 END
 GO
 --EXEC mksp_ProvNuevo 'LUCILA URIBE PEREZ','LURIBE',NULL,'DEMO','PORTAL 2020',NULL

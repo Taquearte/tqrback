@@ -13,6 +13,7 @@ CREATE PROCEDURE mksp_CteNuevo
 @Usuario varchar(10),
 @Observaciones varchar(100),
 @CveCteOtra  varchar(10),
+@EnSilencio bit =0,
 @OK int Output,
 @OKRef varchar(255) Output
 as
@@ -57,8 +58,8 @@ begin
 	if @OK=1 AND EXISTS (SELECT * FROM Cte WHERE RFC = @RFC and RFC <> @RFCGenerico) 
 	Select @OK=0,@OKRef='El RFC ya se encuentra en nuestra base de datos'
 
-	if @OK=1 AND EXISTS (SELECT * FROM Cte WHERE Nombre=@Nombre )
-	Select @OK=0,@OKRef='El Nombre ya se encuentra en nuestra base de datos'
+	--if @OK=1 AND EXISTS (SELECT * FROM Cte WHERE Nombre=@Nombre )
+	--Select @OK=0,@OKRef='El Nombre ya se encuentra en nuestra base de datos'
 
 	if @OK=1
 	INSERT INTO Cte
@@ -67,13 +68,16 @@ begin
 	VALUES (@CveCte, @Nombre, @NombreCorto, @Tipo, NULL, NULL, NULL, NULL, @Observaciones,NULL, NULL, NULL, NULL, NULL, @RFC, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, @Estatus, @hoyhh, @hoy, @Moneda, @Moneda, '(Empresa)', '(Empresa)', '(Empresa)', 
 				 '(Empresa)', 'No', @Moneda, @Usuario, '')
 
-	If @OK=1
+	if @EnSilencio=1
 	BEGIN
-		SET @OKRef='El Cliente se dio de alta correctamente'
-		--SELECT @OK as OK, @OKRef as OKRef 
+		If @OK=1
+		BEGIN
+			SET @OKRef='El Cliente se dio de alta correctamente'
+			--SELECT @OK as OK, @OKRef as OKRef 
+		END
+		ELSE
+			SELECT @OK as OK, @OKRef as OKRef
 	END
-	--ELSE
-		--SELECT @OK as OK, @OKRef as OKRef
 
 END
 GO
