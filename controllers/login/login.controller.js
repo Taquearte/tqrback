@@ -8,7 +8,7 @@ async function empresa_list (req, res) {
     try {
         const pool = await poolPromise
         const result = await pool.request()        
-            .query('select Empresa,Nombre from Empresa ')    
+            .query('select Empresa,Nombre,RFC from Empresa ')    
         let mkempresa= result.recordset;     
         res.status(200).json(mkempresa);
       } catch (err) {
@@ -22,7 +22,7 @@ async function sucursal_list (req, res) {
     try {
         const pool = await poolPromise
         const result = await pool.request()        
-            .query('select Sucursal,Nombre from Sucursal')   
+            .query('select Sucursal,Nombre,RFC from Sucursal')   
         let mksucursal= result.recordset;         
         res.status(200).json(mksucursal);
       } catch (err) {

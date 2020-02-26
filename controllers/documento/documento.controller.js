@@ -71,8 +71,54 @@ async function documentodet (req, res) {
 }
 
 
+async function documentoafectar (req, res ) {
+  try {
+       //console.log(req.params);
+       //console.log(req.query);
+        const pool = await poolPromise
+        const result = await pool.request()  
+        .input('mkid', sql.VarChar(15), req.params.id) 
+        .input('usuario', sql.VarChar(15), req.query.usuario)    
+        .input('modulo', sql.VarChar(20), req.query.modulo)  
+        .input('accion', sql.VarChar(20), 'AFECTAR') 
+        .input('mov', sql.VarChar(50), 'Orden Compra') 
+        .query('Exec mksp_Afectar2 @mkid, @usuario, @modulo, @accion, @mov')
+       // console.log('MK',result);
+      let mkafectar= result.recordset[0];  
+      res.status(200).json(mkafectar);        
+    } catch (err) {
+      res.status(500).json(err.message);
+    }  
+}
+
+/* async function documentoafectar (req, res) {
+  // let mkid=req.params.id
+   //req.body
+   console.log(req.body);
+ //var mkempresa=req.params.id;
+   try {
+       const pool = await poolPromise
+       const result = await pool.request()  
+       .input('mkid', sql.VarChar(100), req.body.id) 
+       .input('usuario', sql.VarChar(10), req.body.usuario)    
+       .input('modulo', sql.VarChar(10), 'COMS')  
+       .input('accion', sql.VarChar(10), 'Afectar') 
+       .input('mov', sql.VarChar(10), 'Orden Compra') 
+       .query('Exec mksp_Afectar @mkid, @usuario, @modulo,@accion,@mov')
+       console.log(result);
+       let mkgasto= result.recordset;     
+       res.status(200).json(mkgasto);
+     } catch (err) {
+       console.log(err.message);
+       res.status(500).json(err.message);
+     }  
+ } */
+
+
+
 module.exports={
     documentolist,    
     documentocab,
-    documentodet
+    documentodet,
+    documentoafectar
 };

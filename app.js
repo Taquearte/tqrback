@@ -12,6 +12,11 @@ var gastoRouter = require('./routes/gasto.router');
 var documentoRouter = require('./routes/documento.router');
 var adjuntoRouter = require('./routes/adjunto.router');
 
+var empresaRouter = require('./routes/empresa.router');
+var sucursalRouter = require('./routes/sucursal.router');
+var usuarioRouter = require('./routes//usuario.router');
+var articuloRouter = require('./routes/articulo.router');
+
 var app = express();
 app.use(cors());
 
@@ -37,6 +42,10 @@ app.use('/',express.static('cliente',{redirect:false}));
 app.use(mkappuse,gastoRouter);
 app.use(mkappuse,documentoRouter);
 app.use(mkappuse,adjuntoRouter);
+app.use(mkappuse,empresaRouter);
+app.use(mkappuse,sucursalRouter);
+app.use(mkappuse,articuloRouter);
+app.use(mkappuse,usuarioRouter);
 
 app.get('*',function(req,res,next){
   res.sendFile(path.resolve('cliente/index.html')); //estas
