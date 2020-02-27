@@ -28,6 +28,7 @@ async function documentolist (req, res) {
 
 async function documentocab (req, res, next ) {
   try {
+    console.log(req.query);
       const pool = await poolPromise
       const result = await pool.request()  
         .input('id', sql.VarChar(10), req.params.id)  
@@ -40,6 +41,7 @@ async function documentocab (req, res, next ) {
         .query('Exec mksp_GetMov @id,@usuario, @empresa, @sucursal,@cabecero, @modulo, @perfil')
      
       let mkdocumentocab= result.recordset[0]; 
+      console.log(mkdocumentocab);
       req.documento = mkdocumentocab;
       next();     
       
